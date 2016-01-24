@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ReplState" timestamp="1453644181187">{:repl-history {:ide [], :local [&quot;(println \&quot;now\&quot; (time/now))&quot; &quot;(ns testvg.core\n  (:require-macros [cljs.core.async.macros :refer [go]]\n                   [reagent.ratom :refer [reaction]])\n  (:require [reagent.core :as reagent :refer [atom]]\n            [reagent.session :as session]\n            [secretary.core :as secretary :include-macros true]\n            [accountant.core :as accountant]\n            [cljs-http.client :as http]\n            [cljs.core.async :refer [&lt;!]]\n            [cljs-time.core :as time]))&quot;], :remote []}}</component>
+</project>
