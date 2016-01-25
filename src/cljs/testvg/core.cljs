@@ -347,19 +347,6 @@
      :drawn       false
      :span        span}))
 
-(def last-hour-volumes
-  (spline-graph {:id          "#hour-chart"
-                 :label       "volume"
-                 :granularity "minute"
-                 :span        (time/hours 1)}))
-
-(def last-minute-volumes
-  (spline-graph
-    {:id          "#minute-chart"
-     :label       "volume"
-     :granularity "second"
-     :span        (time/minutes 1)}))
-
 (defn draw! [ref]
   (swap! ref
          assoc
@@ -387,21 +374,41 @@
                      (draw! ref))))))
 
 (defn spline-charts []
-  (reagent/create-class
-    {:component-did-mount
-     (fn []
-       (fetch-spline-graph-data! last-hour-volumes)
-       (fetch-spline-graph-data! last-minute-volumes)
-       (js/setInterval (fn [] (fetch-spline-graph-data! last-hour-volumes)) 60000)
-       (js/setInterval (fn [] (fetch-spline-graph-data! last-minute-volumes)) 5000))
-     :reagent-render
-     (fn []
-       [:div.spline-charts
-        [:h2 "Messages Volume"]
-        [:div.lab "last hour"]
-        [:div#hour-chart.graph]
-        [:div.lab "last minute"]
-        [:div#minute-chart.graph]])}))
+  (let [i1 (cljs.core/atom nil)
+        i2 (cljs.core/atom nil)
+        last-hour-volumes
+        (spline-graph
+          {:id          "#hour-chart"
+           :label       "volume"
+           :granularity "minute"
+           :span        (time/hours 1)})
+
+        last-minute-volumes
+        (spline-graph
+          {:id          "#minute-chart"
+           :label       "volume"
+           :granularity "second"
+           :span        (time/minutes 1)})]
+    (reagent/create-class
+      {:component-did-mount
+       (fn []
+         (println "didmount")
+         (fetch-spline-graph-data! last-hour-volumes)
+         (fetch-spline-graph-data! last-minute-volumes)
+         (reset! i1 (js/setInterval (fn [] (fetch-spline-graph-data! last-hour-volumes)) 60000))
+         (reset! i2 (js/setInterval (fn [] (fetch-spline-graph-data! last-minute-volumes)) 5000)))
+       :component-will-unmount
+       (fn []
+         (js/clearInterval @i2)
+         (js/clearInterval @i1))
+       :reagent-render
+       (fn []
+         [:div.spline-charts
+          [:h2 "Messages Volume"]
+          [:div.lab "last hour"]
+          [:div#hour-chart.graph]
+          [:div.lab "last minute"]
+          [:div#minute-chart.graph]])})))
 
 ;; -------------------------
 ;; Routes
