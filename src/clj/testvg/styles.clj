@@ -11,6 +11,16 @@
            :float :left}
        [:&.exo {:float :right}]]]
 
+     [:.spline-charts
+      [:.lab
+       {:display :block
+        :padding-right :10px
+        :color         :grey}]
+      [:.graph
+       {:margin :20px}]
+      [:h2 {:font-weight :normal
+            :margin-bottom :60px}]]
+
      [:.bonus
       [:.new {:display :inline-block
               :padding :10px

@@ -70,16 +70,22 @@
 (defn about-page []
   [:div [:h2 "About testvg"]
    [:div
-    "Here's my try to your tests
-     the first four tests were easy
-     I've struggled a bit for the line chart, so I decided to use c3
-     I haven't found a good way to integrate it properly with reagent component,
-     so my implementation is kind of dirty
-     as extra i've done a little interactive plot chart also based on messages volumes that can also fetch and display messages
-     I wish I had time to factorize the code better
-     - API request should be embedded in a simple function
-     - styles are messy
-     - the extra component should be splitted into several sub components"]])
+    [:p "Hi!"]
+    [:p "Here's my try to your tests!"]
+    [:p "the first four were easy."]
+    [:p "I've struggled a bit for the line chart, so I decided to use c3, I haven't found a good way to integrate it properly with reagent component, so my implementation is kind of dirty I think... I've tried to use c3's timeseries type graph but i've encountered some issue with time formatting and haven't being able to use it"]
+    [:p "As extra i've done a little interactive plot chart also based on messages volumes that can also fetch and display messages."]
+    [:p "I wish I had time to factorize the code better:"
+     [:br]
+     "- API request should be embedded in a simple function."
+     [:br]
+     "- styles are messy."
+     [:br]
+     "- the extra component should be splitted into several sub components."]
+    [:p "It was fun to do, I wish I had more time to work on it."]
+    [:p "hope to hear about you soon!"]
+    [:p "Pierre"]
+    ]])
 
 (defn current-page []
   [:div [(session/get :current-page)]])
@@ -339,20 +345,19 @@
      :span        span}))
 
 (def last-hour-volumes
-  (spline-graph {:id "#hour-chart"
-                 :label "volume"
+  (spline-graph {:id          "#hour-chart"
+                 :label       "volume"
                  :granularity "minute"
-                 :span (time/hours 1)}))
+                 :span        (time/hours 1)}))
 
 (def last-minute-volumes
   (spline-graph
-    {:id "#minute-chart"
-     :label "volume"
+    {:id          "#minute-chart"
+     :label       "volume"
      :granularity "second"
-     :span (time/minutes 1)}))
+     :span        (time/minutes 1)}))
 
 (defn draw! [ref]
-  (println "cols" (-> @ref :data :columns))
   (swap! ref
          assoc
          :var (.generate js/c3 (clj->js @ref))
@@ -388,11 +393,12 @@
        (js/setInterval (fn [] (fetch-spline-graph-data! last-minute-volumes)) 5000))
      :reagent-render
      (fn []
-       [:div.charts
-        [:div "last hour volumes"]
-        [:div#hour-chart]
-        [:div "last minute volumes"]
-        [:div#minute-chart]])}))
+       [:div.spline-charts
+        [:h2 "Messages Volume"]
+        [:div.lab "last hour"]
+        [:div#hour-chart.graph]
+        [:div.lab "last minute"]
+        [:div#minute-chart.graph]])}))
 
 ;; -------------------------
 ;; Routes
