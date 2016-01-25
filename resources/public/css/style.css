@@ -1,0 +1,132 @@
+body {
+  margin: 0 auto;
+  padding: 0;
+}
+
+.links {
+  height: 70px;
+}
+
+.links a {
+  padding: 5px;
+  float: left;
+}
+
+.links a.exo {
+  float: right;
+}
+
+.bonus .new {
+  display: inline-block;
+  padding: 10px;
+  background-color: lightskyblue;
+  color: white;
+  margin: 10px 0;
+}
+
+.bonus .counter {
+  display: inline-block;
+  padding: 10px;
+  background-color: FAFAFA;
+  margin: 10px 0;
+}
+
+.bonus .counter .digit {
+  font-size: 30px;
+}
+
+.bonus i.icon-cancel {
+  float: none;
+}
+
+.label {
+  display: inline-block;
+  width: 45%;
+  text-align: right;
+  padding-right: 10px;
+  color: grey;
+}
+
+.topbar {
+  height: 60px;
+}
+
+.delta-t-comp input {
+  width: 50px;
+  text-align: right;
+  border: none;
+  font-size: 12px;
+}
+
+.message {
+  background-color: FAFAFA;
+  margin: 10px;
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.message .author {
+  font-size: 22px;
+  color: lightskyblue;
+  padding-bottom: 15px;
+}
+
+i {
+  color: grey;
+  font-size: 30px;
+  opacity: 0.7;
+}
+
+i:hover {
+  opacity: 1;
+}
+
+i.play-toggle {
+  float: left;
+}
+
+i.icon-cog {
+  float: right;
+}
+
+i.icon-cancel {
+  position: relative;
+  float: right;
+}
+
+.options {
+  background-color: FAFAFA;
+  margin: 10px;
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.chart {
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+.chart .plot {
+  box-sizing: border-box;
+  border: 2px solid white;
+  display: inline-block;
+}
+
+.chart .plot:hover {
+  opacity: 0.5;
+}
+
+select {
+  border: none;
+  font-size: 14px;
+}
+
+select:focus {
+  outline: none;
+}
+
+select.color {
+  width: 135px;
+}

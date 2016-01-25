@@ -23,7 +23,7 @@
                  [com.andrewmcveigh/cljs-time "0.4.0"]
                  [cljs-http "0.1.39"]
                  [garden "1.3.0"]
-                 ]
+                 [cljsjs/c3 "0.4.10-0"]]
 
   :plugins [[lein-environ "1.0.1"]
             [lein-cljsbuild "1.1.1"]

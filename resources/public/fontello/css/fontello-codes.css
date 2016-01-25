@@ -1,0 +1,7 @@
+
+.icon-pause:before { content: '\e800'; } /* '' */
+.icon-play:before { content: '\e801'; } /* '' */
+.icon-cog:before { content: '\e802'; } /* '' */
+.icon-help:before { content: '\e803'; } /* '' */
+.icon-spin2:before { content: '\e804'; } /* '' */
+.icon-cancel:before { content: '\e805'; } /* '' */

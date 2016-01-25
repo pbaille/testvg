@@ -9,64 +9,10 @@
             [cljs.core.async :as async :refer [<!]]
             [cljs-time.core :as time]
             [cljs-time.format :as tformat]
-            [garden.color :as gc]))
+            [garden.color :as gc]
+            cljsjs.c3))
 
 (enable-console-print!)
-
-;; -------------------------
-;; Views
-
-(defn home-page []
-  [:div [:h2 "Welcome to testvg"]
-   [:div [:a {:href "/about"} "go to about page"]]])
-
-(defn about-page []
-  [:div [:h2 "About testvg"]
-   [:div [:a {:href "/"} "go to the home page"]]])
-
-(defn current-page []
-  [:div [(session/get :current-page)]])
-
-(defn test1-comp []
-  (let [seconds-elapsed (atom 0)]
-    (fn []
-      (js/setTimeout #(swap! seconds-elapsed inc) 1000)
-      [:div
-       "Seconds Elapsed: " @seconds-elapsed])))
-
-(defn test1 []
-  [test1-comp])
-
-(defn test2-comp []
-  (let [seconds-elapsed (atom 0)]
-    (fn []
-      (js/setTimeout #(swap! seconds-elapsed inc) 1000)
-      [:div
-       [:a {:href "/"} "home"]
-       [:div "Seconds Elapsed: " @seconds-elapsed]
-       [:div {:style {:font-size :60px
-                      :color     :lightskyblue
-                      :padding   :30px}} @seconds-elapsed]])))
-
-(defn test2 []
-  [test2-comp])
-
-(defn test3-comp []
-  (let [seconds-elapsed (atom 0)
-        off? (atom false)]
-    (fn []
-      (when-not @off? (js/setTimeout #(swap! seconds-elapsed inc) 1000))
-      [:div
-       [:a {:href "/"} "home"]
-       [:div {:on-click (fn [_] (swap! off? not))
-              :style    {:color (if @off? :green :red)}}
-        (if @off? "start" "stop")]
-       [:div "Seconds Elapsed: " @seconds-elapsed]])))
-
-(defn test3 []
-  [test3-comp])
-
-;; Volumes ----------------------------------------------------
 
 ;; helpers ---------
 
@@ -78,6 +24,11 @@
 
 (defn time->str [x]
   (tformat/unparse
+    (tformat/formatters :date-time)
+    x))
+
+(defn str->time [x]
+  (tformat/parse
     (tformat/formatters :date-time)
     x))
 
@@ -109,34 +60,118 @@
 (defn rgb->str [{:keys [red green blue]}]
   (str "rgb(" red "," green "," blue ")"))
 
+;; -------------------------
+;; Views
+
+(defn home-page []
+  [:div [:h2 "Welcome to testvg"]
+   [:div [:a {:href "/about"} "go to about page"]]])
+
+(defn about-page []
+  [:div [:h2 "About testvg"]
+   [:div
+    "Here's my try to your tests
+     the first four tests were easy
+     I've struggled a bit for the line chart, so I decided to use c3
+     I haven't found a good way to integrate it properly with reagent component,
+     so my implementation is kind of dirty
+     as extra i've done a little interactive plot chart also based on messages volumes that can also fetch and display messages
+     I wish I had time to factorize the code better
+     - API request should be embedded in a simple function
+     - styles are messy
+     - the extra component should be splitted into several sub components"]])
+
+(defn current-page []
+  [:div [(session/get :current-page)]])
+
+(defn test1-comp []
+  (let [seconds-elapsed (atom 0)]
+    (fn []
+      (js/setTimeout #(swap! seconds-elapsed inc) 1000)
+      [:div
+       "Seconds Elapsed: " @seconds-elapsed])))
+
+(defn test1 []
+  [test1-comp])
+
+(defn test2-comp []
+  (let [seconds-elapsed (atom 0)]
+    (fn []
+      (js/setTimeout #(swap! seconds-elapsed inc) 1000)
+      [:div
+       [:div "Seconds Elapsed: " @seconds-elapsed]
+       [:div {:style {:font-size :60px
+                      :color     :lightskyblue
+                      :padding   :30px}} @seconds-elapsed]])))
+
+(defn test2 []
+  [test2-comp])
+
+(defn test3-comp []
+  (let [seconds-elapsed (atom 0)
+        off? (atom false)
+        timeout (cljs.core/atom nil)]
+    (fn []
+      (if @off?
+        (js/clearTimeout @timeout)
+        (reset! timeout (js/setTimeout #(swap! seconds-elapsed inc) 1000)))
+      [:div
+       [:div {:on-click (fn [_] (swap! off? not))
+              :style    {:color (if @off? :green :red)}}
+        (if @off? "start" "stop")]
+       [:div "Seconds Elapsed: " @seconds-elapsed]])))
+
+(defn test3 []
+  [test3-comp])
+
+(defn counter []
+  (let [seconds-elapsed (atom 0)
+        off? (atom false)
+        timeout (cljs.core/atom nil)]
+    (fn []
+      (if @off?
+        (js/clearTimeout @timeout)
+        (reset! timeout (js/setTimeout #(swap! seconds-elapsed inc) 1000)))
+      [:div.counter
+       [:i {:on-click (fn [_] (swap! off? not))
+            :style    {:color (if @off? :green :red)}
+            :class    (if @off? "icon-play" "icon-pause")}]
+       [:span.digit @seconds-elapsed]])))
+
+(defn bonus-comp []
+  (let [timers (atom {})]
+    (fn []
+      [:div.bonus
+       [:div.new {:on-click (fn [_] (swap! timers assoc (gensym) (counter)))} "new counter"]
+       (for [[id t] (sort @timers)]
+         ^{:key id}
+         [:div
+          [t]
+          [:span {:on-click (fn [_] (swap! timers dissoc id))}
+           [:i.icon-cancel]]])])))
+
+(defn bonus []
+  [bonus-comp])
+
+;; ----------------------------------------------------------------------
+;; Extra
+
 ;; requests -------
 
-(defn get-volume [delta-t cb]
-  (async/take! (http/get "http://api.vigiglobe.com/api/statistics/v1/volume"
-                         {:with-credentials? false
-                          :query-params      {"project_id" "vgteam-TV_Shows"
-                                              "timeFrom"   (ago delta-t)
-                                              "timeTo"     (now)}})
-               cb))
-
-(comment
-  (get-volume (time/minutes 2)
-              (fn [r] (println (-> r :body :data :messages)))))
-
 (defn get-volumes! [state]
-  (let [{:keys [plot span on]} @state]
+  (let [{:keys [plot span on]} @state
+        now (now)]
     (async/take! (http/get "http://api.vigiglobe.com/api/statistics/v1/volume"
                            {:with-credentials? false
                             :query-params      {"granularity" (:unit plot)
                                                 "project_id"  "vgteam-TV_Shows"
                                                 "timeFrom"    (ago (delta-t span))
-                                                "timeTo"      (now)}})
+                                                "timeTo"      now}})
                  (fn [r]
-                   (let [val (mapv (partial apply +)
-                                        (partition (:val plot)
-                                                   (map second
-                                                        (-> r :body :data :messages))))]
-                     (reset-in! state [:xs] (if on (conj (vec (next val)) 0) val)))))))
+                   (let [val (mapv #(reduce (fn [[t x] [_ y]] [t (+ x y)]) (first %) (next %))
+                                   (partition (:val plot)
+                                              (-> r :body :data :messages)))]
+                     (reset-in! state [:xs] (if on (conj (vec (next val)) [now 0]) val)))))))
 
 (defn get-volume-from [from cb]
   (async/take! (http/get "http://api.vigiglobe.com/api/statistics/v1/volume"
@@ -147,43 +182,25 @@
                cb))
 
 (defn volumes-refresh! [state last-step]
-  (println "refresh")
   (get-volume-from last-step
                    (fn [r]
                      (swap-in! state
                                [:xs]
-                            #(conj (vec (butlast %)) (-> r :body :data :messages first second))))))
+                               #(conj (vec (butlast %)) (-> r :body :data :messages first))))))
 
-(defn get-messages [ref from to]
+(defn get-messages [state from to]
+  (reset-in! state [:fetching-messages] true)
   (async/take! (http/get "http://api.vigiglobe.com/api/content/v1/messages"
                          {:with-credentials? false
                           :query-params      {"project_id" "vgteam-TV_Shows"
+                                              "limit"      200
                                               "timeFrom"   (time->str from)
                                               "timeTo"     (time->str to)}})
                (fn [r]
-                 (reset! ref (-> r :body :data)))))
+                 (reset-in! state [:fetching-messages] false)
+                 (reset-in! state [:messages] (-> r :body :data)))))
 
-(async/take! (http/get "http://api.vigiglobe.com/api/content/v1/messages"
-                       {:with-credentials? false
-                        :query-params      {"project_id" "vgteam-TV_Shows"
-                                            "timeFrom"   (ago (delta-t 10 "second"))
-                                            "timeTo"     (now)}})
-             (fn [r]
-               (println (map :text (-> r :body :data)))))
-
-;; no internet! fake data ---------
-
-(comment
-  (defn fake-data []
-    (vec (repeatedly 20 #(rand-nth (range 10)))))
-
-  (defn get-volumes! [s]
-    (reset-in! s [:xs] (fake-data)))
-
-  (defn volumes-step! [s]
-    (swap-in! s [:xs] #(conj (vec (next %)) (first %)))))
-
-;; ---------------------------------
+;; comps ---------------------------------
 
 (defn delta-t-comp [ref label {:keys [val unit]} key]
   (let [cb (fn [field e]
@@ -192,43 +209,36 @@
                         ((if (= field :val) int identity)
                           (.. e -target -value)))
              (get-volumes! ref))]
-    [:span
-     [:span (str label ": ")]
+    [:div.delta-t-comp
+     [:div.label label]
      [:input {:type      "number"
               :value     val
-              :on-change (partial cb :val)
-              :style     {:width      :50px
-                          :text-align :right
-                          :border     :none
-                          :font-size  :12px}}]
+              :on-change (partial cb :val)}]
      [:select
       {:value     unit
        :on-change (partial cb :unit)}
-      (for [x ["second" "minute" "hour"]]
+      (for [x ["second" "minute"]]
         ^{:key (gensym)}
         [:option {:value x}
          (if (= 1 val) x (str x "s"))])]]))
 
-(defn color-picker [current cb]
-  [:select
-   {:value     current
-    :on-change (fn [e] (cb (.. e -target -value)))}
-   (for [[k v] gc/color-name->hex]
+(defn color-picker [label current cb]
+  [:div.color-picker
+   [:div.label label]
+   [:select.color
+    {:value     current
+     :on-change (fn [e] (cb (.. e -target -value)))}
+    (for [[k v] gc/color-name->hex]
+      ^{:key (gensym)}
+      [:option {:value v} (name k)])]])
+
+(defn messages-list [messages]
+  [:div.messages-list
+   (for [x messages]
      ^{:key (gensym)}
-     [:option {:value v} (name k)])])
-
-(defn message-comp [state]
-  (let []
-    [:div state]))
-
-(defn messages-list [from to]
-  (let [xs (atom ())
-        _ (get-messages xs from to)]
-    (fn []
-      [:div.messages-list
-       (for [x xs]
-         ^{:key (gensym)}
-         [message-comp x])])))
+     [:div.message
+      [:div.author (:author x)]
+      [:div.text (:text x)]])])
 
 (defn volumes-comp [state]
   (let [state (atom state)
@@ -236,7 +246,11 @@
         inter (cljs.core/atom nil)]
     (get-volumes! state)
     (fn []
-      (let [{:keys [width height plot span on colors rate xs focus]} @state
+      (let [{:keys [width height plot
+                    span on colors rate
+                    xs messages
+                    show-options
+                    fetching-messages]} @state
             [c1 c2] colors]
         (js/clearTimeout @inter)
         (when on
@@ -246,57 +260,139 @@
 
             (if step?
               (do (reset! last-step (time/now))
-                  (swap-in! state [:xs] #(vec (next (conj % 0))))))
+                  (swap-in! state [:xs] #(vec (next (conj % [(now) 0]))))))
             (reset! inter
                     (js/setInterval (fn [] (volumes-refresh! state @last-step))
                                     (time/in-millis (delta-t rate))))))
 
         [:div
-         [:div.options
-          [:span {:on-click (fn [_] (swap-in! state [:on] not))
-                  :style    {:color (if on :red :green)}}
-           (if on "stop" "start")]
-          (delta-t-comp state "plot" plot :plot)
-          (delta-t-comp state "span" span :span)
-          (color-picker c1 (fn [v] (reset-in! state [:colors 0] v)))
-          (color-picker c2 (fn [v] (reset-in! state [:colors 1] v)))]
+
+         [:div.topbar
+          [:i
+           {:on-click (fn [_] (swap-in! state [:on] not))
+            :style    {:float :left
+                       :color (if on c2 c1)}
+            :class    (if on "icon-pause" "icon-play")}]
+          [:i.icon-cog
+           {:on-click (fn [_] (swap-in! state [:show-options] not))}]]
+         (when show-options
+           [:div.options
+            [:i.icon-cancel {:on-click (fn [_] (reset-in! state [:show-options] false))}]
+            (delta-t-comp state "division" plot :plot)
+            (delta-t-comp state "total time" span :span)
+            (delta-t-comp state "refresh rate" rate :rate)
+            (color-picker "color 1" c1 (fn [v] (reset-in! state [:colors 0] v)))
+            (color-picker "color 2" c2 (fn [v] (reset-in! state [:colors 1] v)))])
+
          [:div.chart
-          {:style {:height  :400px
-                   :width   :800px
-                   :padding :20px}}
-          (let [max (apply max xs)
+          {:style {:height (str height "px")
+                   :width  (str width "px")}}
+          (let [max (apply max (map second xs))
                 plot-width (/ width (count xs))
                 ls @last-step]
-            (for [x xs
-                  :let [rat (/ x max)]]
+            (for [[t x] xs
+                  :let [rat (/ x max)
+                        t (str->time t)]]
               ^{:key (gensym)}
-              [:div {:on-click (fn [_])
-                     :style    {:box-sizing       :border-box
-                                :border           "2px solid white"
-                                :display          :inline-block
-                                :height           (str (int (+ 10 (* height rat))) "px")
-                                :width            (str plot-width "px")
-                                :background-color (rgb->str (blend c1 c2 rat))}}]))]
-         (if focus
-           [messages-list focus (time/plus focus (delta-t plot))])
-         [:div "<h1>YOP</h1>"]]))))
+              [:div.plot
+               {:on-click (fn [_] (get-messages state t (time/plus t (delta-t plot))))
+                :style    {:height           (str (int (+ 10 (* (- height 10) rat))) "px")
+                           :width            (str plot-width "px")
+                           :background-color (rgb->str (blend c1 c2 rat))}}]))]
 
-(defn bonus []
+         (cond
+           fetching-messages [:div "fetching messages..."]
+           (seq messages) [messages-list messages]
+           :else [:div "click a plot to see its content"])]))))
+
+(defn extra []
   [volumes-comp
-   {:width 600
-    :height 400
-    :rate   {:unit "second"
-             :val  1}
-    :plot   {:unit "second"
-             :val  10}
-    :span   {:unit "minute"
-             :val  6}
-    :on     true
-    :colors [(gc/color-name->hex :lightskyblue)
-             (gc/color-name->hex :lightcoral)]
-    :focus nil}])
+   {:width        600
+    :height       400
+    :rate         {:unit "second"
+                   :val  2}
+    :plot         {:unit "second"
+                   :val  20}
+    :span         {:unit "minute"
+                   :val  15}
+    :on           true
+    :colors       [(gc/color-name->hex :lightskyblue)
+                   (gc/color-name->hex :lightcoral)]
+    :show-options false}])
 
+;; line charts -----------------------
 
+(def prepend (comp vec cons))
+
+(defn format-columns [data label]
+  [(prepend label (map second data))])
+
+(defn spline-graph [{:keys [id label data granularity span]}]
+  (atom
+    {:bindto      id
+     :data        {:type    "spline"
+                   :columns (format-columns data label)}
+     :label       label
+
+     :granularity granularity
+     :drawn       false
+     :span        span}))
+
+(def last-hour-volumes
+  (spline-graph {:id "#hour-chart"
+                 :label "volume"
+                 :granularity "minute"
+                 :span (time/hours 1)}))
+
+(def last-minute-volumes
+  (spline-graph
+    {:id "#minute-chart"
+     :label "volume"
+     :granularity "second"
+     :span (time/minutes 1)}))
+
+(defn draw! [ref]
+  (println "cols" (-> @ref :data :columns))
+  (swap! ref
+         assoc
+         :var (.generate js/c3 (clj->js @ref))
+         :drawn true))
+
+(defn load! [ref]
+  (.load (:var @ref) (clj->js {:columns (-> @ref :data :columns)})))
+
+(defn fetch-spline-graph-data! [ref]
+  (let [{:keys [label drawn granularity span]} @ref]
+    (async/take! (http/get "http://api.vigiglobe.com/api/statistics/v1/volume"
+                           {:with-credentials? false
+                            :query-params      {"granularity" granularity
+                                                "project_id"  "vgteam-TV_Shows"
+                                                "timeFrom"    (time->str (time/minus (time/now) span))
+                                                "timeTo"      (now)}})
+                 (fn [r]
+                   (reset-in! ref
+                              [:data :columns]
+                              (format-columns (-> r :body :data :messages)
+                                              label))
+                   (if drawn
+                     (load! ref)
+                     (draw! ref))))))
+
+(defn spline-charts []
+  (reagent/create-class
+    {:component-did-mount
+     (fn []
+       (fetch-spline-graph-data! last-hour-volumes)
+       (fetch-spline-graph-data! last-minute-volumes)
+       (js/setInterval (fn [] (fetch-spline-graph-data! last-hour-volumes)) 60000)
+       (js/setInterval (fn [] (fetch-spline-graph-data! last-minute-volumes)) 5000))
+     :reagent-render
+     (fn []
+       [:div.charts
+        [:div "last hour volumes"]
+        [:div#hour-chart]
+        [:div "last minute volumes"]
+        [:div#minute-chart]])}))
 
 ;; -------------------------
 ;; Routes
@@ -318,6 +414,12 @@
 
 (secretary/defroute "/#/bonus" []
                     (session/put! :current-page #'bonus))
+
+(secretary/defroute "/#/extra" []
+                    (session/put! :current-page #'extra))
+
+(secretary/defroute "/#/spline" []
+                    (session/put! :current-page #'spline-charts))
 
 ;; -------------------------
 ;; Initialize app
