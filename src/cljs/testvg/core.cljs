@@ -203,6 +203,9 @@
                                               "timeFrom"   (time->str from)
                                               "timeTo"     (time->str to)}})
                (fn [r]
+                 ; this would be better than 2 state mutation in a row
+                 ; (swap! state assoc :fetching-messages false :messages (-> r :body :data))
+                 ; but it doesn't do the job :(
                  (reset-in! state [:fetching-messages] false)
                  (reset-in! state [:messages] (-> r :body :data)))))
 
