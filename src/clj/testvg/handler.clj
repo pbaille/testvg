@@ -36,7 +36,7 @@
      (include-css "css/c3.min.css")]
     [:body
      mount-target
-     (include-js "js/app.js")]]))
+     (include-js "js/main.js")]]))
 
 
 (defroutes routes

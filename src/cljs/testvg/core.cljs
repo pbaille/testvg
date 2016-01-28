@@ -448,3 +448,5 @@
   (accountant/dispatch-current!)
   (mount-root))
 
+(init!)
+
