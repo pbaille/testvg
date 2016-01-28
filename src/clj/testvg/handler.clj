@@ -3,12 +3,12 @@
             [compojure.route :refer [not-found resources]]
             [hiccup.core :refer [html]]
             [hiccup.page :refer [include-js include-css]]
-            [testvg.middleware :refer [wrap-middleware]]
+            #_[testvg.middleware :refer [wrap-middleware]]
             [environ.core :refer [env]]))
 
 (def mount-target
   [:div
-   [:div.links
+   [:div.nav
     [:a {:href "/"} "home"]
     [:a.exo {:href "/#/counters"} "counters"]
     [:a.exo {:href "/#/volume"} "volume"]
