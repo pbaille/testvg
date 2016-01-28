@@ -10,13 +10,9 @@
   [:div
    [:div.links
     [:a {:href "/"} "home"]
-    [:a {:href "/about"} "about"]
-    [:a.exo {:href "/#/test1"} "test1"]
-    [:a.exo {:href "/#/test2"} "test2"]
-    [:a.exo {:href "/#/test3"} "test3"]
-    [:a.exo {:href "/#/bonus"} "bonus"]
-    [:a.exo {:href "/#/spline"} "spline charts"]
-    [:a.exo {:href "/#/extra"} "extra"]]
+    [:a.exo {:href "/#/bonus"} "counters"]
+    [:a.exo {:href "/#/spline"} "charts"]
+    [:a.exo {:href "/#/extra"} "app1"]]
    [:div#app
       [:h3 "ClojureScript has not been compiled!"]
       [:p "please run "
@@ -30,7 +26,7 @@
      [:meta {:charset "utf-8"}]
      [:meta {:name "viewport"
              :content "width=device-width, initial-scale=1"}]
-     (include-css (if (env :dev) "css/site.css" "css/site.min.css"))
+     (include-css "css/site.css")
      (include-css "fontello/css/fontello.css")
      (include-css "css/style.css")
      (include-css "css/c3.min.css")]
