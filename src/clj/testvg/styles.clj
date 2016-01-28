@@ -2,15 +2,29 @@
   [:require [garden.core :refer :all]
             [garden.def :refer [defstylesheet defstyles]]])
 
+(defn graph [id color]
+  [id
+   [:.c3-line-volume {:stroke (str color "!important")}]
+   [:.c3-area {:fill (str color "!important")}]
+   [:.c3-circles-volume {:stroke (str color "!important")}
+    [:.c3-circle {:fill (str color "!important")}]]])
+
 (defstyles screen
            {:output-to "resources/public/css/style.css"}
 
            [:body {:margin  "0 auto"
                    :padding 0}]
+
            [:.links
-            {:height :70px}
-            [:a {:padding :5px
-                 :float   :left}
+            {:height :70px
+             :padding "0 30px"
+             :background-color :lightgrey}
+            [:a {:line-height :70px
+                 :padding "0 5px"
+                 :float   :left
+                 :color   :white
+                 :font-size :18px
+                 :font-weight :bold}
              [:&.exo {:float :right}]]]
 
            [:.spline-charts
@@ -23,12 +37,13 @@
             [:h2 {:font-weight   :normal
                   :margin-bottom :60px}]]
 
-           [:.bonus
+           [:.counters
+            {:padding :30px}
             [:.new {:display          :inline-block
                     :padding          :10px
                     :background-color :lightskyblue
                     :color            :white
-                    :margin           "10px 0"}]
+                    :margin-bottom :20px}]
             [:.counter {:display          :inline-block
                         :padding          :10px
                         :background-color :FAFAFA
@@ -118,12 +133,19 @@
                :font-size  :25px
                :padding    :10px}]
              :i.icon-cancel
-             {:color      :grey
-              :font-size  :25px}]]
+             {:color     :grey
+              :font-size :25px}]]
 
-           [:#hour-chart
-            [:.c3-chart-bar {:color "pink !important"}]
-            [:.c3-line-volume {:stroke "pink !important"}]
-            [:.c3-area {:fill "pink !important"}]
-            [:.c3-circles-volume {:stroke "pink !important"}
-             [:.c3-circle {:fill "pink !important"}]]])
+
+
+           [:.graphs
+            {:padding "0 30px"}
+            [:h2 {:padding :20px
+                  :text-align :center
+                  :color      :grey}]
+            [:.graph-wrap [:.title {:color   :darkgrey
+                                    :padding :10px}]
+             [:.c3-legend-item {:display :none}]
+             (graph :#last-minute-volumes "lightsalmon")
+             (graph :#last-hour-volumes "darkviolet")
+             (graph :#last-day-volumes "yellowgreen")]])

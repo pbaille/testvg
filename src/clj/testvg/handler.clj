@@ -10,9 +10,9 @@
   [:div
    [:div.links
     [:a {:href "/"} "home"]
-    [:a.exo {:href "/#/bonus"} "counters"]
-    [:a.exo {:href "/#/spline"} "charts"]
-    [:a.exo {:href "/#/extra"} "app1"]]
+    [:a.exo {:href "/#/counters"} "counters"]
+    [:a.exo {:href "/#/volume"} "volume"]
+    [:a.exo {:href "/#/app1"} "app1"]]
    [:div#app
       [:h3 "ClojureScript has not been compiled!"]
       [:p "please run "

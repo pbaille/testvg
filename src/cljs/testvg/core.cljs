@@ -44,7 +44,8 @@
 (def str->time-unit-fn
   {"minute" time/minutes
    "second" time/seconds
-   "hour"   time/hours})
+   "hour"   time/hours
+   "day"   time/days})
 
 (defn delta-t
   ([{:keys [unit val]}]
@@ -125,10 +126,10 @@
               :class    (if off* "icon-play" "icon-pause")}]
          [:span.digit @seconds-elapsed]]))))
 
-(defn bonus-comp []
+(defn counters-comp []
   (let [timers (atom {})]
     (fn []
-      [:div.bonus
+      [:div.counters
        [:div.new {:on-click (fn [_] (swap! timers assoc (gensym) (counter)))} "new counter"]
        (for [[id t] (sort @timers)]
          ^{:key id}
@@ -137,8 +138,8 @@
           [:span {:on-click (fn [_] (swap! timers dissoc id))}
            [:i.icon-cancel]]])])))
 
-(defn bonus []
-  [bonus-comp])
+(defn counters []
+  [counters-comp])
 
 ;; ----------------------------------------------------------------------
 ;; App1
@@ -195,14 +196,6 @@
                         assoc
                         :last-messages
                         (-> r :body :data)))}))
-
-(comment
-  (request
-    {:section  "content/v1/messages"
-     :params   {"limit" 3
-                "sort"  "[\"pub_date_epoch_ms:desc\"]"}
-     :callback (fn [r]
-                 (println r))}))
 
 ;; comps ------
 
@@ -323,7 +316,9 @@
                    (gc/color-name->hex :lightcoral)]
     :show-options false}])
 
-;; line charts -----------------------
+;; charts -----------------------
+
+; helpers --
 
 (def prepend (comp vec cons))
 
@@ -339,20 +334,6 @@
   (format-columns [["2016-01-24T05:26:08.357Z" 1] ["2016-01-24T05:26:09.357Z" 1]]
                   "minute"))
 
-(defn spline-graph [{:keys [id label data format granularity span]}]
-  (atom
-    {:bindto      id
-     :data        {:x       "x"
-                   :type    "area-spline"
-                   :columns (format-columns data label)
-                   :xFormat "%Y-%m-%dT%H:%M:%S"
-                   }
-     :axis        {:x {:type "timeseries" :tick {:format format}}}
-     :label       label
-     :granularity granularity
-     :drawn       false
-     :span        span}))
-
 (defn draw! [ref]
   (swap! ref
          assoc
@@ -362,61 +343,7 @@
 (defn load! [ref]
   (.load (:var @ref) (clj->js {:columns (-> @ref :data :columns)})))
 
-
-(defn get-chart-data! [ref]
-  (let [{:keys [label drawn granularity span]} @ref]
-    (request
-      {:section  "statistics/v1/volume"
-       :params   {"granularity" granularity
-                  "timeFrom"    (time->str (time/minus (time/now) span))}
-       :callback (fn [r]
-                   (reset-in! ref
-                              [:data :columns]
-                              (format-columns (-> r :body :data :messages)
-                                              label))
-                   (if drawn
-                     (load! ref)
-                     (draw! ref)))})))
-
-
-
-(defn spline-charts []
-  (let [i1 (cljs.core/atom nil)
-        i2 (cljs.core/atom nil)
-        last-minute-volumes
-        (spline-graph
-          {:id          "#minute-chart"
-           :label       "volume"
-           :format      "%M:%S"
-           :granularity "second"
-           :span        (time/minutes 1)})
-        last-hour-volumes
-        (spline-graph
-          {:id          "#hour-chart"
-           :label       "volume"
-           :format      "%M:%S"
-           :granularity "minute"
-           :span        (time/hours 1)})]
-    (reagent/create-class
-      {:component-did-mount
-       (fn []
-         (get-chart-data! last-minute-volumes)
-         (get-chart-data! last-hour-volumes)
-         (reset! i1 (js/setInterval (fn [] (get-chart-data! last-minute-volumes)) 2000))
-         (reset! i2 (js/setInterval (fn [] (get-chart-data! last-hour-volumes)) 60000)))
-       :component-will-unmount
-       (fn []
-         (js/clearInterval @i1))
-       :reagent-render
-       (fn []
-         [:div.spline-charts
-          [:h2 "Messages Volume"]
-          [:div.lab "last minute"]
-          [:div#minute-chart.graph]
-          [:div.lab "last hour"]
-          [:div#hour-chart.graph]])})))
-
-;; graphs ------------------
+; comps ----
 
 (defn graph-comp
   [{:keys [id sub span format title label type rate] :as state}]
@@ -457,31 +384,33 @@
           [:div.title title]
           [:div.graph {:id id}]])})))
 
-(defn graph1 []
-  [graph-comp
-   {:id "graph1"
-    :title "last minute"
-    :label "volume"
-    :type "area-spline"
-    :sub {:val 5 :unit "second"}
-    :span {:val 1 :unit "minute"}
-    :format "%H:%M:%S"}])
-
-(defn graph2 []
-  [graph-comp
-   {:id "graph2"
-    :title "last hour"
-    :label "volume"
-    :type "area-spline"
-    :sub {:val 2 :unit "minute"}
-    :span {:val 1 :unit "hour"}
-    :format "%H:%M:%S"}])
-
-(defn graphs []
-  [:div
+(defn volume-charts []
+  [:div.graphs
    [:h2 "Tweet Volume"]
-   (graph1)
-   (graph2)])
+   [graph-comp
+    {:id "last-minute-volumes"
+     :title "last minute"
+     :label "volume"
+     :type "area-spline"
+     :sub {:val 5 :unit "second"}
+     :span {:val 1 :unit "minute"}
+     :format "%H:%M:%S"}]
+   [graph-comp
+    {:id "last-hour-volumes"
+     :title "last hour"
+     :label "volume"
+     :type "area-spline"
+     :sub {:val 2 :unit "minute"}
+     :span {:val 1 :unit "hour"}
+     :format "%H:%M:%S"}]
+   [graph-comp
+    {:id "last-day-volumes"
+     :title "last day"
+     :label "volume"
+     :type "area-spline"
+     :sub {:val 1 :unit "hour"}
+     :span {:val 1 :unit "day"}
+     :format "%Hh"}]])
 
 ;; -------------------------
 ;; Routes
@@ -489,17 +418,14 @@
 (secretary/defroute "/" []
                     (session/put! :current-page #'home-page))
 
-(secretary/defroute "/#/bonus" []
-                    (session/put! :current-page #'bonus))
+(secretary/defroute "/#/counters" []
+                    (session/put! :current-page #'counters))
 
-(secretary/defroute "/#/extra" []
+(secretary/defroute "/#/app1" []
                     (session/put! :current-page #'app1))
 
-(secretary/defroute "/#/spline" []
-                    (session/put! :current-page #'spline-charts))
-
-(secretary/defroute "/#/graph1" []
-                    (session/put! :current-page #'graphs))
+(secretary/defroute "/#/volume" []
+                    (session/put! :current-page #'volume-charts))
 
 ;; -------------------------
 ;; Initialize app
