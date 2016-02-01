@@ -10,6 +10,9 @@
             [cljs-time.core :as time]
             [cljs-time.format :as tformat]
             [garden.color :as gc]
+            [plotter.example :refer [c1]]
+            [d3.word-cloud :refer [word-cloud]]
+            [d3.utils :as d3u]
             cljsjs.c3))
 
 (enable-console-print!)
@@ -45,7 +48,7 @@
   {"minute" time/minutes
    "second" time/seconds
    "hour"   time/hours
-   "day"   time/days})
+   "day"    time/days})
 
 (defn delta-t
   ([{:keys [unit val]}]
@@ -107,8 +110,7 @@
 ;; Views
 
 (defn home-page []
-  [:div [:h2 "Welcome to testvg"]
-   [:div [:a {:href "/about"} "go to about page"]]])
+  [:div.home [:h1 "Welcome!"]])
 
 (defn current-page []
   [:div [(session/get :current-page)]])
@@ -197,6 +199,7 @@
                         :last-messages
                         (-> r :body :data)))}))
 
+
 ;; comps ------
 
 (defn delta-t-comp [ref label {:keys [val unit]} key]
@@ -236,11 +239,27 @@
                        "lastest tweets")
       (when ms [:i.icon-cancel {:on-click (fn [_] (swap! state assoc :messages nil))}])]
 
-     (for [x (if ms (:xs ms) (:last-messages @state))]
+     (for [x (if ms (:xs ms) (:last-messages @state))
+           :let [retweet_count (:retweet_count x)
+                 favorite_count (:favorite_count x)
+                 id (:id_str x)]]
        ^{:key (gensym)}
-       [:div.message
-        [:div.author (:author x)]
-        [:div.text (:text x)]])]))
+       [:div.message {:on-click (fn [] (.open js/window (str "https://twitter.com/statuses/" id) "_blank"))}
+        [:div.author {:on-click (fn [] (.open js/window (str "https://twitter.com/" (:author x)) "_blank"))}
+         (:author x)]
+        [:img {:src (first (:images x))}]
+        [:div.text (:text x)]
+        [:div.icons
+         [:i.icon-heart {:on-click
+                         (fn [e]
+                           (.open js/window (str "https://twitter.com/intent/like?tweet_id=" id) "_blank")
+                           (.stopPropagation e))}]
+         (when-not (zero? favorite_count) [:span favorite_count])
+         [:i.icon-retweet {:on-click
+                           (fn [e]
+                             (.open js/window (str "https://twitter.com/intent/retweet?tweet_id=" id) "_blank")
+                             (.stopPropagation e))}]
+         (when-not (zero? retweet_count) [:span retweet_count])]])]))
 
 ;; main ------
 
@@ -305,12 +324,12 @@
            [:div.messages-list [:div.head "fetching messages..."]]
            [messages-list state])]))))
 
-(defn app1 []
+(defn plots []
   [app1-comp
    {:height       400
-    :rate         {:unit "second" :val 2}
-    :plot         {:unit "second" :val 20}
-    :span         {:unit "minute" :val 15}
+    :rate         {:unit "minute" :val 2}
+    :plot         {:unit "minute" :val 10}
+    :span         {:unit "minute" :val 600}
     :on           true
     :colors       [(gc/color-name->hex :lightskyblue)
                    (gc/color-name->hex :lightcoral)]
@@ -355,7 +374,7 @@
                           :columns [["x"] [label]]
                           :xFormat "%Y-%m-%dT%H:%M:%S"}
                  :axis   {:x {:type "timeseries" :tick {:format format}}}
-                 :drawn false})
+                 :drawn  false})
         req (fn []
               (request
                 {:section  "statistics/v1/volume"
@@ -388,29 +407,136 @@
   [:div.graphs
    [:h2 "Tweet Volume"]
    [graph-comp
-    {:id "last-minute-volumes"
-     :title "last minute"
-     :label "volume"
-     :type "area-spline"
-     :sub {:val 5 :unit "second"}
-     :span {:val 1 :unit "minute"}
+    {:id     "last-minute-volumes"
+     :title  "last minute"
+     :label  "volume"
+     :type   "area-spline"
+     :sub    {:val 5 :unit "second"}
+     :span   {:val 1 :unit "minute"}
      :format "%H:%M:%S"}]
    [graph-comp
-    {:id "last-hour-volumes"
-     :title "last hour"
-     :label "volume"
-     :type "area-spline"
-     :sub {:val 2 :unit "minute"}
-     :span {:val 1 :unit "hour"}
+    {:id     "last-hour-volumes"
+     :title  "last hour"
+     :label  "volume"
+     :type   "area-spline"
+     :sub    {:val 2 :unit "minute"}
+     :span   {:val 1 :unit "hour"}
      :format "%H:%M:%S"}]
    [graph-comp
-    {:id "last-day-volumes"
-     :title "last day"
-     :label "volume"
-     :type "area-spline"
-     :sub {:val 1 :unit "hour"}
-     :span {:val 1 :unit "day"}
+    {:id     "last-day-volumes"
+     :title  "last day"
+     :label  "volume"
+     :type   "area-spline"
+     :sub    {:val 1 :unit "hour"}
+     :span   {:val 1 :unit "day"}
      :format "%Hh"}]])
+
+;; word-cloud --------------
+
+(defn wc-request [{:keys [kind span limit]} data]
+  (request {:section  "statistics/v1/wordcloud"
+            :params   {"limit"    limit
+                       "kind"     kind
+                       "timeFrom" (time->str (time/minus (time/now) span))}
+            :callback (fn [x]
+                        (reset! data
+                                (mapv (fn [[k v]] {:text      (str (when (= kind "hashtags") "#") (name k))
+                                                   :frequency (second (first (:messages v)))})
+                                      (-> x :body :data))))}))
+
+(def wc-messages (atom {:xs [] :text nil}))
+
+(defn get-wc-messages [{:keys [kind span limit text]}]
+  (request {:section  "content/v1/messages"
+            :params   {"limit"    limit
+                       "sort"     "[\"pub_date_epoch_ms:desc\"]"
+                       kind       (str "[\"" text "\"]")
+                       "timeFrom" (time->str (time/minus (time/now) span))}
+            :callback (fn [x]
+                        (swap! wc-messages assoc
+                               :xs (-> x :body :data)
+                               :text (str (when (= kind "hashtags") "#") (name text))))}))
+
+(defn wcloud-comp [state]
+  (let [node (atom nil)
+        wc (cljs.core/atom nil)
+        rot-scaler (.. d3u/scale linear (domain #js [0 1]) (range #js[-10 10]))
+        state (cljs.core/atom state)
+        data (cljs.core/atom nil)
+        refresh-data (fn [] (wc-request @state data))]
+
+    (refresh-data)
+    (add-watch state :state (fn [_ x _ _] (refresh-data)))
+    (add-watch data :data (fn [_ x _ _] (@wc @data)))
+
+    (reagent/create-class
+      {:component-did-update
+       (fn []
+         (if-not @wc
+           (reset! wc (word-cloud
+                        {:selector        "#wc-display"
+                         :width           800
+                         :height          500
+                         :rotate          (fn [] (rot-scaler (rand)))
+                         :font-size-range [20 50]
+                         :handler (fn [d] (get-wc-messages
+                                            (merge @state
+                                                   {:limit 12
+                                                    :text (if (= (:kind @state) "hashtags")
+                                                            (apply str (next (.-text d)))
+                                                            (.-text d))})))})))
+         (@wc @data))
+       :component-did-mount
+       (fn [this] (reset! node (reagent/dom-node this)))
+       :reagent-render
+       (fn []
+         @node
+         [:div.word-cloud
+          [:div.actions
+           [:span {:on-click (fn [] (swap! state assoc :kind "hashtags"))} "hashtags"]
+           [:span {:on-click (fn [] (swap! state assoc :kind "tokens"))} "tokens"]
+           [:span.right {:on-click (fn [] (swap! state assoc :span (time/minutes 1)))} "minute"]
+           [:span.right {:on-click (fn [] (swap! state assoc :span (time/hours 1)))} "hour"]
+           [:span.right {:on-click (fn [] (swap! state assoc :span (time/days 1)))} "day"]]
+          [:div#wc-display]])})))
+
+(defn wc-messages-list []
+  (let [{:keys [text xs]} @wc-messages]
+    [:div.messages-list
+   [:div.head
+    {:style {:font-size :30px}}
+    (if text text "click a word to see messages")
+    (when text [:i.icon-cancel {:on-click (fn [_] (reset! wc-messages {:xs [] :text nil}))}])]
+
+   (for [x xs
+         :let [retweet_count (:retweet_count x)
+               favorite_count (:favorite_count x)
+               id (:id_str x)]]
+     ^{:key (gensym)}
+     [:div.message {:on-click (fn [] (.open js/window (str "https://twitter.com/statuses/" id) "_blank"))}
+      [:div.author {:on-click (fn [] (.open js/window (str "https://twitter.com/" (:author x)) "_blank"))}
+       (:author x)]
+      [:img {:src (first (:images x))}]
+      [:div.text (:text x)]
+      [:div.icons
+       [:i.icon-heart {:on-click
+                       (fn [e]
+                         (.open js/window (str "https://twitter.com/intent/like?tweet_id=" id) "_blank")
+                         (.stopPropagation e))}]
+       (when-not (zero? favorite_count) [:span favorite_count])
+       [:i.icon-retweet {:on-click
+                         (fn [e]
+                           (.open js/window (str "https://twitter.com/intent/retweet?tweet_id=" id) "_blank")
+                           (.stopPropagation e))}]
+       (when-not (zero? retweet_count) [:span retweet_count])]])]))
+
+(defn wcloud []
+  [:div
+   [wcloud-comp {:kind  "hashtags"
+                :limit 80
+                :span  (time/days 1)
+                :rate  (time/hours 1)}]
+   [wc-messages-list]])
 
 ;; -------------------------
 ;; Routes
@@ -421,11 +547,14 @@
 (secretary/defroute "/#/counters" []
                     (session/put! :current-page #'counters))
 
-(secretary/defroute "/#/app1" []
-                    (session/put! :current-page #'app1))
+(secretary/defroute "/#/plots" []
+                    (session/put! :current-page #'plots))
 
 (secretary/defroute "/#/volume" []
                     (session/put! :current-page #'volume-charts))
+
+(secretary/defroute "/#/cloud" []
+                    (session/put! :current-page #'wcloud))
 
 ;; -------------------------
 ;; Initialize app
@@ -439,4 +568,3 @@
   (mount-root))
 
 (init!)
-

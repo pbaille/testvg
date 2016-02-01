@@ -2,7 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9eba970d-9773-48d3-8370-49f0502780c8" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/cljs/d3/bubbles.cljs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/cljs/plotter/core.cljs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/cljs/plotter/example.cljs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/cljs/d3/utils.cljs" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/cljs/d3/word_cloud.cljs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cljs/testvg/core.cljs" afterPath="$PROJECT_DIR$/src/cljs/testvg/core.cljs" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/clj/testvg/handler.clj" afterPath="$PROJECT_DIR$/src/clj/testvg/handler.clj" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project.clj" afterPath="$PROJECT_DIR$/project.clj" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/replstate.xml" afterPath="$PROJECT_DIR$/.idea/replstate.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/public/css/style.css" afterPath="$PROJECT_DIR$/resources/public/css/style.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/clj/testvg/styles.clj" afterPath="$PROJECT_DIR$/src/clj/testvg/styles.clj" />
@@ -31,27 +38,47 @@
         <entry file="file://$PROJECT_DIR$/src/clj/testvg/handler.clj">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+              <caret line="14" column="37" selection-start-line="14" selection-start-column="37" selection-end-line="14" selection-end-column="37" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="styles.clj" pinned="false" current-in-tab="true">
+      <file leaf-file-name="utils.cljs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/cljs/d3/utils.cljs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="59" selection-end-column="73" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="word_cloud.cljs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/cljs/d3/word_cloud.cljs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="19" column="57" selection-start-line="19" selection-start-column="57" selection-end-line="19" selection-end-column="57" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="styles.clj" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/clj/testvg/styles.clj">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.19479166">
-              <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="36" column="33" selection-start-line="36" selection-start-column="33" selection-end-line="36" selection-end-column="33" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="core.cljs" pinned="false" current-in-tab="false">
+      <file leaf-file-name="core.cljs" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/cljs/testvg/core.cljs">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-73.85185">
-              <caret line="201" column="29" selection-start-line="201" selection-start-column="24" selection-end-line="201" selection-end-column="29" />
+            <state vertical-scroll-proportion="2.0824635">
+              <caret line="544" column="20" selection-start-line="544" selection-start-column="20" selection-end-line="544" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -70,10 +97,19 @@
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/script/figwheel.clj" />
         <option value="$PROJECT_DIR$/resources/public/css/site.css" />
+        <option value="$PROJECT_DIR$/src/cljs/testvg/plotter.clj" />
+        <option value="$PROJECT_DIR$/src/cljs/testvg/plotter.cljs" />
+        <option value="$PROJECT_DIR$/src/cljs/plotter/core.cljs" />
+        <option value="$PROJECT_DIR$/src/cljs/strokes/test.cljs" />
+        <option value="$PROJECT_DIR$/src/cljs/d3/test.cljs" />
+        <option value="$PROJECT_DIR$/src/cljs/plotter/example.cljs" />
+        <option value="$PROJECT_DIR$/src/cljs/d3/bubbles.cljs" />
         <option value="$PROJECT_DIR$/project.clj" />
-        <option value="$PROJECT_DIR$/src/cljs/testvg/core.cljs" />
+        <option value="$PROJECT_DIR$/src/cljs/d3/utils.cljs" />
+        <option value="$PROJECT_DIR$/src/cljs/d3/word_cloud.cljs" />
         <option value="$PROJECT_DIR$/src/clj/testvg/handler.clj" />
         <option value="$PROJECT_DIR$/src/clj/testvg/styles.clj" />
+        <option value="$PROJECT_DIR$/src/cljs/testvg/core.cljs" />
       </list>
     </option>
   </component>
@@ -81,9 +117,9 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1078" />
+    <option name="x" value="1189" />
     <option name="y" value="23" />
-    <option name="width" value="1482" />
+    <option name="width" value="1371" />
     <option name="height" value="1413" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -117,10 +153,6 @@
               <option name="myItemId" value="testvg" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -129,20 +161,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="testvg" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="testvg" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="testvg" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="target" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -165,6 +183,50 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="testvg" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="testvg" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="testvg" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cljs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="plotter" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="testvg" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="testvg" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cljs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="d3" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -364,32 +426,56 @@
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
   <component name="ToolWindowManager">
-    <frame x="1078" y="23" width="1482" height="1413" extended-state="0" />
+    <frame x="1189" y="23" width="1371" height="1413" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2632364" sideWeight="0.32197496" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2636296" sideWeight="0.31725696" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960477" sideWeight="0.49721837" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Leiningen" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14812239" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="REPL" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2632364" sideWeight="0.678025" order="12" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18161266" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="REPL" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2636296" sideWeight="0.682743" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
     </layout>
+    <layout-to-restore>
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2636296" sideWeight="0.31959707" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960477" sideWeight="0.49721837" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Leiningen" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="REPL" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2636296" sideWeight="0.68040293" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29945055" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+    </layout-to-restore>
   </component>
   <component name="Vcs.Log.UiProperties">
     <option name="RECENTLY_FILTERED_USER_GROUPS">
@@ -485,6 +571,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.4473684">
           <caret line="68" column="6" selection-start-line="68" selection-start-column="6" selection-end-line="68" selection-end-column="6" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -515,13 +602,6 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cljc/testvg/util.cljc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.099415205">
-          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -560,26 +640,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/project.clj">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="51" column="42" selection-start-line="51" selection-start-column="36" selection-end-line="51" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/public/css/site.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="30" column="9" selection-start-line="30" selection-start-column="9" selection-end-line="30" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/script/figwheel.clj">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21136767">
-          <caret line="14" column="20" selection-start-line="14" selection-start-column="20" selection-end-line="14" selection-end-column="20" />
           <folding />
         </state>
       </provider>
@@ -600,10 +664,74 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/cljs/testvg/core.cljs">
+    <entry file="file://$PROJECT_DIR$/src/cljc/testvg/util.cljc">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-73.85185">
-          <caret line="201" column="29" selection-start-line="201" selection-start-column="24" selection-end-line="201" selection-end-column="29" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/public/js/cljs/core.cljs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.24332571">
+          <caret line="9133" column="6" selection-start-line="9133" selection-start-column="6" selection-end-line="9133" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cljs/plotter/core.cljs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="17" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cljs/d3/bubbles.cljs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="23" column="10" selection-start-line="23" selection-start-column="10" selection-end-line="23" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/script/figwheel.clj">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.814815">
+          <caret line="14" column="20" selection-start-line="14" selection-start-column="20" selection-end-line="14" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project.clj">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8695198">
+          <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cljs/plotter/example.cljs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="40" selection-end-column="73" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cljs/d3/word_cloud.cljs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="19" column="57" selection-start-line="19" selection-start-column="57" selection-end-line="19" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cljs/d3/utils.cljs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="59" selection-end-column="73" />
           <folding />
         </state>
       </provider>
@@ -611,15 +739,23 @@
     <entry file="file://$PROJECT_DIR$/src/clj/testvg/handler.clj">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <caret line="14" column="37" selection-start-line="14" selection-start-column="37" selection-end-line="14" selection-end-column="37" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/clj/testvg/styles.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.19479166">
-          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="36" column="33" selection-start-line="36" selection-start-column="33" selection-end-line="36" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cljs/testvg/core.cljs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="2.0824635">
+          <caret line="544" column="20" selection-start-line="544" selection-start-column="20" selection-end-line="544" selection-end-column="20" />
           <folding />
         </state>
       </provider>

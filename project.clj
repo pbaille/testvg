@@ -45,7 +45,7 @@
                                     [:cljsbuild :builds :app :compiler :output-dir]
                                     [:cljsbuild :builds :app :compiler :output-to]]
 
-  :source-paths ["src/clj" "src/cljc"]
+  :source-paths ["src/clj" "src/cljc" "script"]
   :resource-paths ["resources"]
 
   :garden {:builds [{;; Optional name of the build:

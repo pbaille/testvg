@@ -19,10 +19,22 @@
       "src": "entypo"
     },
     {
+      "uid": "pt5lb2orj9ms0n4yyxjavefdukcv1scl",
+      "css": "heart",
+      "code": 59398,
+      "src": "modernpics"
+    },
+    {
       "uid": "rrhco7mfj6ro9yzhe4a1rbln9flw47re",
       "css": "cancel",
       "code": 59397,
       "src": "modernpics"
+    },
+    {
+      "uid": "26abd5de5952c46cf3a31f70330241a0",
+      "css": "retweet",
+      "code": 59399,
+      "src": "mfglabs"
     },
     {
       "uid": "7336247ba3db350dec8d6c0a47cef966",
