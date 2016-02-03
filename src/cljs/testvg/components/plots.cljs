@@ -52,7 +52,8 @@
        [:div.message {:on-click (fn [] (.open js/window (str "https://twitter.com/statuses/" id) "_blank"))}
         [:div.author {:on-click (fn [] (.open js/window (str "https://twitter.com/" (:author x)) "_blank"))}
          (:author x)]
-        [:img {:src (first (:images x))}]
+        (when-let [fi (first (:images x))]
+          [:div.image {:style {:background (str "url(" fi ")")}}])
         [:div.text (:text x)]
         [:div.icons
          [:i.icon-heart {:on-click
