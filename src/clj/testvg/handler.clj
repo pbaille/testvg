@@ -33,8 +33,7 @@
      (include-css "css/c3.min.css")]
     [:body
      mount-target
-     (include-js "js/main.js")
-     #_(include-js "https://cdn.rawgit.com/pbaille/f09bdcad7586e08f6bed/raw/7729a23eeb2beee5f91204c73000dfcd564702e7/d3-cloud.js")]]))
+     (include-js "js/main.js")]]))
 
 
 (defroutes routes
