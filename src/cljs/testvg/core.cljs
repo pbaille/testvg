@@ -38,11 +38,17 @@
 (defn time-str->hour-str [x]
   (subs x 11 19))
 
-(defn ago [delta-t]
-  (time->str (time/minus (time/now) delta-t)))
-
 (defn now []
-  (time->str (time/now)))
+  (time/minus (time/now) (time/days 3)))
+
+(defn now-str []
+  (time->str (now)))
+
+(defn ago [delta-t]
+  (time/minus (now) delta-t))
+
+(defn ago-str [delta-t]
+  (time->str (ago delta-t)))
 
 (def str->time-unit-fn
   {"minute" time/minutes
@@ -98,7 +104,7 @@
 
 (defn default-params []
   {"project_id" "vgteam-TV_Shows"
-   "timeTo"     (now)})
+   "timeTo"     (now-str)})
 
 (defn request [{:keys [section params callback]}]
   (async/take! (http/get (str base-url section)
@@ -150,10 +156,10 @@
 
 (defn get-volumes! [state]
   (let [{:keys [plot span on]} @state
-        now (now)]
+        now (now-str)]
     (request {:section  "statistics/v1/volume"
               :params   {"granularity" (:unit plot)
-                         "timeFrom"    (ago (delta-t span))}
+                         "timeFrom"    (ago-str (delta-t span))}
               :callback (fn [r]
                           (let [val (mapv #(reduce (fn [[t x] [_ y]] [t (+ x y)]) (first %) (next %))
                                           (partition (:val plot)
@@ -191,8 +197,10 @@
 (defn get-last3-messages [state]
   (request
     {:section  "content/v1/messages"
-     :params   {"limit" 3
-                "sort"  "[\"pub_date_epoch_ms:desc\"]"}
+     :params   {"limit"    3
+                "sort"     "[\"pub_date_epoch_ms:desc\"]"
+                "timeFrom" (ago-str (delta-t (:plot @state)))
+                "timeTo"   (now-str)}
      :callback (fn [r]
                  (swap! state
                         assoc
@@ -279,11 +287,11 @@
         (when on
           (let [step? (or (not @last-step)
                           (time/before? (time/plus @last-step (delta-t plot))
-                                        (time/now)))]
+                                        (now)))]
 
             (if step?
-              (do (reset! last-step (time/now))
-                  (swap-in! state [:xs] #(vec (next (conj % [(now) 0]))))))
+              (do (reset! last-step (now))
+                  (swap-in! state [:xs] #(vec (next (conj % [(now-str) 0]))))))
             (reset! inter
                     (js/setInterval (fn [] (volumes-refresh! state @last-step)
                                       (get-last3-messages state))
@@ -327,9 +335,9 @@
 (defn plots []
   [app1-comp
    {:height       400
-    :rate         {:unit "minute" :val 2}
-    :plot         {:unit "minute" :val 10}
-    :span         {:unit "minute" :val 600}
+    :rate         {:unit "second" :val 2}
+    :plot         {:unit "second" :val 10}
+    :span         {:unit "minute" :val 10}
     :on           true
     :colors       [(gc/color-name->hex :lightskyblue)
                    (gc/color-name->hex :lightcoral)]
@@ -379,7 +387,7 @@
               (request
                 {:section  "statistics/v1/volume"
                  :params   {"granularity" (:unit sub)
-                            "timeFrom"    (time->str (time/minus (time/now) (delta-t span)))}
+                            "timeFrom"    (ago-str (delta-t span))}
                  :callback (fn [r]
                              (reset-in! graph
                                         [:data :columns]
@@ -437,7 +445,7 @@
   (request {:section  "statistics/v1/wordcloud"
             :params   {"limit"    limit
                        "kind"     kind
-                       "timeFrom" (time->str (time/minus (time/now) span))}
+                       "timeFrom" (ago-str span)}
             :callback (fn [x]
                         (reset! data
                                 (mapv (fn [[k v]] {:text      (str (when (= kind "hashtags") "#") (name k))
@@ -451,7 +459,7 @@
             :params   {"limit"    limit
                        "sort"     "[\"pub_date_epoch_ms:desc\"]"
                        kind       (str "[\"" text "\"]")
-                       "timeFrom" (time->str (time/minus (time/now) span))}
+                       "timeFrom" (ago-str span)}
             :callback (fn [x]
                         (swap! wc-messages assoc
                                :xs (-> x :body :data)
@@ -503,39 +511,39 @@
 (defn wc-messages-list []
   (let [{:keys [text xs]} @wc-messages]
     [:div.messages-list
-   [:div.head
-    {:style {:font-size :30px}}
-    (if text text "click a word to see messages")
-    (when text [:i.icon-cancel {:on-click (fn [_] (reset! wc-messages {:xs [] :text nil}))}])]
+     [:div.head
+      {:style {:font-size :30px}}
+      (if text text "click a word to see messages")
+      (when text [:i.icon-cancel {:on-click (fn [_] (reset! wc-messages {:xs [] :text nil}))}])]
 
-   (for [x xs
-         :let [retweet_count (:retweet_count x)
-               favorite_count (:favorite_count x)
-               id (:id_str x)]]
-     ^{:key (gensym)}
-     [:div.message {:on-click (fn [] (.open js/window (str "https://twitter.com/statuses/" id) "_blank"))}
-      [:div.author {:on-click (fn [] (.open js/window (str "https://twitter.com/" (:author x)) "_blank"))}
-       (:author x)]
-      [:img {:src (first (:images x))}]
-      [:div.text (:text x)]
-      [:div.icons
-       [:i.icon-heart {:on-click
-                       (fn [e]
-                         (.open js/window (str "https://twitter.com/intent/like?tweet_id=" id) "_blank")
-                         (.stopPropagation e))}]
-       (when-not (zero? favorite_count) [:span favorite_count])
-       [:i.icon-retweet {:on-click
+     (for [x xs
+           :let [retweet_count (:retweet_count x)
+                 favorite_count (:favorite_count x)
+                 id (:id_str x)]]
+       ^{:key (gensym)}
+       [:div.message {:on-click (fn [] (.open js/window (str "https://twitter.com/statuses/" id) "_blank"))}
+        [:div.author {:on-click (fn [] (.open js/window (str "https://twitter.com/" (:author x)) "_blank"))}
+         (:author x)]
+        [:img {:src (first (:images x))}]
+        [:div.text (:text x)]
+        [:div.icons
+         [:i.icon-heart {:on-click
                          (fn [e]
-                           (.open js/window (str "https://twitter.com/intent/retweet?tweet_id=" id) "_blank")
+                           (.open js/window (str "https://twitter.com/intent/like?tweet_id=" id) "_blank")
                            (.stopPropagation e))}]
-       (when-not (zero? retweet_count) [:span retweet_count])]])]))
+         (when-not (zero? favorite_count) [:span favorite_count])
+         [:i.icon-retweet {:on-click
+                           (fn [e]
+                             (.open js/window (str "https://twitter.com/intent/retweet?tweet_id=" id) "_blank")
+                             (.stopPropagation e))}]
+         (when-not (zero? retweet_count) [:span retweet_count])]])]))
 
 (defn wcloud []
   [:div
    [wcloud-comp {:kind  "hashtags"
-                :limit 80
-                :span  (time/days 1)
-                :rate  (time/hours 1)}]
+                 :limit 80
+                 :span  (time/days 1)
+                 :rate  (time/hours 1)}]
    [wc-messages-list]])
 
 ;; -------------------------

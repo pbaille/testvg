@@ -4,9 +4,9 @@
     <option name="DEFAULT_COMPILER" value="Javac" />
     <resourceExtensions />
     <wildcardResourcePatterns>
-      <entry name="!cljsbuild:*" />
       <entry name="!dev-resources:*" />
       <entry name="!resources:*" />
+      <entry name="!cljsbuild:*" />
       <entry name="!?*.java" />
       <entry name="!?*.form" />
       <entry name="!?*.class" />

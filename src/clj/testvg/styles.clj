@@ -121,9 +121,7 @@
              {:color     :grey
               :font-size :25px}]
             [:.message
-             {:display :flex
-              :flex-flow "column nowrap"
-              :flex-basis :30%
+             {:flex-basis :30%
               :box-sizing :border-box
               :background-color :FAFAFA
               :margin :1.5%
@@ -132,7 +130,8 @@
               :margin-bottom    :10px}
              [:.text {:padding :10px}]
              [:.author {:text-align :center}]
-             [:img {:width :100%}]
+             [:img {:max-width :100%
+                    :object-fit :contain}]
              [:.icons
               {:margin-top :auto
                :text-align :right}]
@@ -164,10 +163,10 @@
              {:padding "10px 10px"
               :margin-bottom :20px
               :background :#FAFAFA} [:span
-             {:display :inline-block
-              :padding :5px
-              :margin :5px
-              :background :#E8E8E8
-              :border-radius :5px
-              :line-height :20px}
-             [:&.right {:float :right}]]]])
+                                     {:display :inline-block
+                                      :padding :5px
+                                      :margin :5px
+                                      :background :#E8E8E8
+                                      :border-radius :5px
+                                      :line-height :20px}
+                                     [:&.right {:float :right}]]]])
