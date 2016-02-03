@@ -1,5 +1,5 @@
 (ns ^:figwheel-no-load testvg.dev
-  (:require [testvg.core :as core]
+  (:require [testvg.core-old :as core]
             [figwheel.client :as figwheel :include-macros true]))
 
 (enable-console-print!)
