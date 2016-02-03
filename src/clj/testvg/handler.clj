@@ -38,8 +38,6 @@
 
 (defroutes routes
   (GET "/" [] loading-page)
-  (GET "/about" [] loading-page)
-  
   (resources "/")
   (not-found "Not Found"))
 
