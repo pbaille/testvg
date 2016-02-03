@@ -17,7 +17,7 @@
    [:div#app
       [:h3 "ClojureScript has not been compiled!"]
       [:p "please run "
-       [:b "lein figwheel"]
+       [:b "lein run -m clojure.main script/figwheel.clj"]
        " in order to start the compiler"]]])
 
 (def loading-page
