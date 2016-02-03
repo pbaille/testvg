@@ -1,5 +1,6 @@
 (ns d3.word-cloud
   (:require cljsjs.d3
+            cljsjs.d3-cloud
             [d3.utils :as u :refer [p >> *> js>]]))
 
 (defn word-cloud [{:keys [selector width height rotate font-size-range handler]}]

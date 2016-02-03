@@ -11,7 +11,6 @@
       <sourceFolder url="file://$MODULE_DIR$/src/clj" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/dev-resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/cljs" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -20,6 +19,7 @@
     <orderEntry type="library" name="Leiningen: clj-time:0.11.0" level="project" />
     <orderEntry type="library" name="Leiningen: cljs-http:0.1.39" level="project" />
     <orderEntry type="library" name="Leiningen: cljsjs/c3:0.4.10-0" level="project" />
+    <orderEntry type="library" name="Leiningen: cljsjs/d3-cloud:1.2.1-0" level="project" />
     <orderEntry type="library" name="Leiningen: cljsjs/d3:3.5.5-0" level="project" />
     <orderEntry type="library" name="Leiningen: cljsjs/react:0.13.3-1" level="project" />
     <orderEntry type="library" name="Leiningen: clojure-complete:0.2.3" level="project" />

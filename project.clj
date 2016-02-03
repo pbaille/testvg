@@ -24,6 +24,7 @@
                  [cljs-http "0.1.39"]
                  [garden "1.3.0"]
                  [cljsjs/c3 "0.4.10-0"]
+                 [cljsjs/d3-cloud "1.2.1-0"]
                  [figwheel-sidecar "0.5.0"]]
 
   :plugins [[lein-environ "1.0.1"]
